@@ -1,4 +1,4 @@
-package org.willwt.sequence.core;
+package org.willwt.idplus.segment.core;
 
 import java.util.concurrent.atomic.AtomicLong;
 

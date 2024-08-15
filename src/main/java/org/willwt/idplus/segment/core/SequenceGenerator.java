@@ -1,6 +1,6 @@
-package org.willwt.sequence.core;
+package org.willwt.idplus.segment.core;
 
-import org.willwt.sequence.dao.SequenceDAOWrapper;
+import org.willwt.idplus.segment.dao.SequenceDAOWrapper;
 
 /**
  * 序列生成器
@@ -11,9 +11,9 @@ public interface SequenceGenerator {
 
     /**
      * 设置序列名称
-     * @param name
+     * @param bizCode
      */
-    void setName(String name);
+    void setBizCode(String bizCode);
 
     /**
      * 设置更新序列的DAO实现

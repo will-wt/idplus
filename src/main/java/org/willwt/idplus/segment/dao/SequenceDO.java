@@ -1,4 +1,4 @@
-package org.willwt.sequence.dao;
+package org.willwt.idplus.segment.dao;
 
 import java.util.Date;
 
@@ -9,26 +9,30 @@ import java.util.Date;
  */
 public class SequenceDO {
 
-    /** 名称 */
-    private String name;
+    private Date gmtCreate;
+    private Date gmtModified;
+
+
+    /** 业务代码 */
+    private String bizCode;
 
     /** 当前值 */
     private Long curValue;
 
     /** 增长步长 */
-    private Integer increment;
+    private Integer step;
 
     /** 更新时间 */
     private Date updateTime;
 
 
 
-    public String getName() {
-        return name;
+    public String getBizCode() {
+        return bizCode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setBizCode(String bizCode) {
+        this.bizCode = bizCode;
     }
 
     public Long getCurValue() {
@@ -39,12 +43,12 @@ public class SequenceDO {
         this.curValue = curValue;
     }
 
-    public Integer getIncrement() {
-        return increment;
+    public Integer getStep() {
+        return step;
     }
 
-    public void setIncrement(Integer increment) {
-        this.increment = increment;
+    public void setStep(Integer step) {
+        this.step = step;
     }
 
     public Date getUpdateTime() {
@@ -58,11 +62,12 @@ public class SequenceDO {
     @Override
     public String toString() {
         return "SequenceDO{" +
-                "name='" + name + '\'' +
+                "gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", bizCode='" + bizCode + '\'' +
                 ", curValue=" + curValue +
-                ", increment=" + increment +
+                ", step=" + step +
                 ", updateTime=" + updateTime +
                 '}';
     }
-
 }

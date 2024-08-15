@@ -1,9 +1,9 @@
-package org.willwt.idplus;
+package org.willwt.idplus.segment;
 
-import cn.hutool.core.lang.Assert;
-import org.willwt.sequence.core.DefaultSequenceGenerator;
-import org.willwt.sequence.core.SequenceGenerator;
-import org.willwt.sequence.dao.SequenceDAOWrapper;
+import org.willwt.idplus.common.AssertUtil;
+import org.willwt.idplus.segment.core.DefaultSequenceGenerator;
+import org.willwt.idplus.segment.core.SequenceGenerator;
+import org.willwt.idplus.segment.dao.SequenceDAOWrapper;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class IdGenerator {
 
-    /** 序列生成器缓存 */
+    /** 序列生成器缓存，key：bizCode，value：SequenceGenerator */
     private static Map<String, SequenceGenerator> GENERATOR_MAP = new ConcurrentHashMap<>(12);
     private static Lock lock = new ReentrantLock();
 
@@ -27,27 +27,27 @@ public class IdGenerator {
 
     /**
      * 获取序列的下一个ID
-     * @param name
+     * @param bizCode
      * @return
      */
-    public long nextId(String name){
-        SequenceGenerator generator = GENERATOR_MAP.get(name);
+    public long nextId(String bizCode){
+        SequenceGenerator generator = GENERATOR_MAP.get(bizCode);
 
         if (generator == null){
             lock.lock();
             try {
                 // 二次确认是否为null
-                generator = GENERATOR_MAP.get(name);
+                generator = GENERATOR_MAP.get(bizCode);
 
                 if (generator == null){
-                    Assert.notNull(sequenceDAOWrapper, "SequenceDAO instance not found");
+                    AssertUtil.notNull(sequenceDAOWrapper, "SequenceDAO instance not found");
                     generator = new DefaultSequenceGenerator();
-                    generator.setName(name);
+                    generator.setBizCode(bizCode);
                     generator.setSequenceDAO(sequenceDAOWrapper);
                     if (retryTimes != null){
                         generator.setRetryTimes(retryTimes);
                     }
-                    GENERATOR_MAP.putIfAbsent(name, generator);
+                    GENERATOR_MAP.putIfAbsent(bizCode, generator);
                 }
             }finally {
                 lock.unlock();

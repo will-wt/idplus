@@ -1,4 +1,4 @@
-package org.willwt.sequence.dao;
+package org.willwt.idplus.segment.dao;
 
 /**
  * 序列数据库访问对象的包装器
@@ -10,18 +10,18 @@ public interface SequenceDAOWrapper {
 
     /**
      * 获取该类型的序列信息
-     * @param name
+     * @param bizCode   业务code
      * @return
      */
-    SequenceDO getSequence(String name);
+    SequenceDO getSequence(String bizCode);
 
     /**
      * 每次以固定的步长更新序列，更新成功，就代表获得序列下一段区间的序号值。
      * 这里需要使用数据库的乐观锁来避免并发更新。
-     * @param name  序列名称
+     * @param bizCode  业务code
      * @param curValue 当前序列值
      * @return
      */
-    boolean increaseSequence(String name, long curValue);
+    boolean increaseSequence(String bizCode, long curValue);
 
 }

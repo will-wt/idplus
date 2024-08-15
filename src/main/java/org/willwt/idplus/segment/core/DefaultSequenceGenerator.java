@@ -1,8 +1,8 @@
-package org.willwt.sequence.core;
+package org.willwt.idplus.segment.core;
 
-import cn.hutool.core.lang.Assert;
-import org.willwt.sequence.dao.SequenceDAOWrapper;
-import org.willwt.sequence.dao.SequenceDO;
+import org.willwt.idplus.common.AssertUtil;
+import org.willwt.idplus.segment.dao.SequenceDAOWrapper;
+import org.willwt.idplus.segment.dao.SequenceDO;
 
 import java.util.Objects;
 import java.util.concurrent.locks.Lock;
@@ -25,9 +25,9 @@ public class DefaultSequenceGenerator implements SequenceGenerator {
     private volatile SequenceRange sequenceRange;
 
     @Override
-    public void setName(String name) {
-        Objects.requireNonNull(name, "sequence name required");
-        this.name = name;
+    public void setBizCode(String bizCode) {
+        Objects.requireNonNull(bizCode, "sequence name required");
+        this.name = bizCode;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DefaultSequenceGenerator implements SequenceGenerator {
 
     @Override
     public void setRetryTimes(int retryTimes) {
-        Assert.isTrue(retryTimes > 0, "retryTimes invalid");
+        AssertUtil.isTrue(retryTimes > 0, "retryTimes invalid");
         this.retryTimes = retryTimes;
     }
 
@@ -70,15 +70,15 @@ public class DefaultSequenceGenerator implements SequenceGenerator {
             }
         }
 
-        Assert.isTrue(value > 0, "sequence value invalid, value="+ value);
+        AssertUtil.isTrue(value > 0, "sequence value invalid, value="+ value);
         return value;
     }
 
     private SequenceRange fetchNextSequenceRange(String name) {
         for (int i=0; i<retryTimes; i++){
             SequenceDO sequenceDO = sequenceDAOWrapper.getSequence(name);
-            Assert.notNull(sequenceDO, "sequence name record not exist, name="+ name);
-            Assert.isTrue(sequenceDO.getCurValue() != null && sequenceDO.getCurValue() >= 0,
+            AssertUtil.notNull(sequenceDO, "sequence name record not exist, name="+ name);
+            AssertUtil.isTrue(sequenceDO.getCurValue() != null && sequenceDO.getCurValue() >= 0,
                     "sequence value must greater than 0, name={}, value={}",
                     name, sequenceDO.getCurValue());
 
@@ -96,7 +96,7 @@ public class DefaultSequenceGenerator implements SequenceGenerator {
             }
 
             long minValue = curValue + 1;
-            long maxValue = curValue + sequenceDO.getIncrement();
+            long maxValue = curValue + sequenceDO.getStep();
             return new SequenceRange(minValue, maxValue);
         }
 
