@@ -1,0 +1,20 @@
+// 1）通过序列名查询序列信息
+@Select('''
+    select name,
+           cur_value as curValue,
+           increment
+    from sequence
+    where lock_name = #{name}
+''')
+SequenceDO getSequence(@Param("name") String name);
+
+
+// 2）更新序列，获取一段序号
+@Update('''<script>
+    update sequence
+    set cur_value =  cur_value + increment,
+        gmt_modified = now()
+    where name = #{name}
+      and cur_value = #{curValue}
+</script>''')
+int increaseSequence(@Param("name") String name, @Param("curValue") long curValue);
